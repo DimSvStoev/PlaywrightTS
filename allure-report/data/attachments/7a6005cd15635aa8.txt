@@ -1,0 +1,166 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Endpoint /books >> GET all books >> has 200 response code
+- Location: C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\get-books.spec.ts:39:9
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 200
+Received: 404
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\get-books.spec.ts:40:33
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { BaseApi } from '../src/api/base-api';
+   3 | import { BooksApi } from '../src/api/books-api';
+   4 | import { Endpoint, Method } from '../src/constants/api-const';
+   5 |
+   6 | test.describe(`Endpoint /${Endpoint.BOOKS}`, () => {
+   7 |   let api: BaseApi;
+   8 |   let repository: BooksApi;
+   9 |   const endpoint = Endpoint.BOOKS;
+   10 |
+   11 |   test.beforeAll(async () => {
+   12 |     api = new BaseApi();
+   13 |     repository = new BooksApi();
+   14 |     await api.initContext();
+   15 |   });
+   16 |
+   17 |   // GET all books
+   18 |   test.describe(`${Method.GET} all ${endpoint}`, () => {
+   19 |     let response;
+   20 |     let raw: string;
+   21 |     let data: any;
+   22 |   
+   23 |     test.beforeAll(async () => {
+   24 |       const config = api.buildRequestConfiguration(Method.GET, endpoint);
+   25 |       response = await api.sendRequest(config);
+   26 |   
+   27 |       raw = await response.text();
+   28 |       console.log('GET all response status:', response.status());
+   29 |       console.log('GET all response body (text):', raw);
+   30 |   
+   31 |       try {
+   32 |         data = JSON.parse(raw);
+   33 |       } catch (e) {
+   34 |         console.error('❌ Failed to parse JSON:', e);
+   35 |         data = null;
+   36 |       }
+   37 |     });
+   38 |   
+   39 |     test('has 200 response code', async () => {
+>  40 |       expect(response.status()).toBe(200);
+      |                                 ^ Error: expect(received).toBe(expected) // Object.is equality
+   41 |     });
+   42 |   
+   43 |     test('has response data as a non-empty array', async () => {
+   44 |       expect(Array.isArray(data)).toBe(true);
+   45 |       expect(data.length).toBeGreaterThan(0);
+   46 |     });
+   47 |   });
+   48 |
+   49 |   // GET book by ID
+   50 |   test.describe(`${Method.GET} ${endpoint} by ID`, () => {
+   51 |     let response;
+   52 |     let existingBook;
+   53 |
+   54 |     test.beforeAll(async () => {
+   55 |       existingBook = repository.loadBooks()[0];
+   56 |       const config = api.buildRequestConfiguration(Method.GET, endpoint, { id: existingBook.id });
+   57 |       response = await api.sendRequest(config);
+   58 |     });
+   59 |
+   60 |     test('has 200 response code', async () => {
+   61 |       expect(response.status()).toBe(200);
+   62 |     });
+   63 |
+   64 |     test('has all fields matching existing book', async () => {
+   65 |       const data = await response.json();
+   66 |       for (const key of Object.keys(existingBook)) {
+   67 |         expect(data[key]).toBe(existingBook[key]);
+   68 |       }
+   69 |     });
+   70 |   });
+   71 |
+   72 |   // GET book by non-existing ID
+   73 |   test.describe(`${Method.GET} ${endpoint} by non-existing ID`, () => {
+   74 |     let response;
+   75 |
+   76 |     test.beforeAll(async () => {
+   77 |       const config = api.buildRequestConfiguration(Method.GET, endpoint, { id: -999 });
+   78 |       response = await api.sendRequest(config);
+   79 |     });
+   80 |
+   81 |     test('has 404 response code', async () => {
+   82 |       expect(response.status()).toBe(404);
+   83 |     });
+   84 |   });
+   85 |
+   86 |   // POST create new book
+   87 |   test.describe(`${Method.POST} ${endpoint}`, () => {
+   88 |     let response;
+   89 |     let payload;
+   90 |
+   91 |     test.beforeAll(async () => {
+   92 |       payload = repository.generateBookPayload();
+   93 |       const config = api.buildRequestConfiguration(Method.POST, endpoint, { payload });
+   94 |       response = await api.sendRequest(config);
+   95 |     });
+   96 |
+   97 |     test('has 200 response code', async () => {
+   98 |       expect(response.status()).toBe(200);
+   99 |     });
+  100 |
+  101 |     test('has response data with valid id', async () => {
+  102 |       const data = await response.json();
+  103 |       expect(data.id).toBeGreaterThan(0);
+  104 |     });
+  105 |
+  106 |     test('has response data matching payload', async () => {
+  107 |       const data = await response.json();
+  108 |       for (const key of Object.keys(payload)) {
+  109 |         expect(data[key]).toBe(payload[key]);
+  110 |       }
+  111 |     });
+  112 |   });
+  113 |
+  114 |   // PUT update existing book
+  115 |   test.describe(`${Method.PUT} ${endpoint} by ID`, () => {
+  116 |     let response;
+  117 |     let updatedPayload;
+  118 |
+  119 |     test.beforeAll(async () => {
+  120 |       const existingBook = repository.loadBooks()[0];
+  121 |       updatedPayload = repository.generateBookPayload({ id: existingBook.id, title: 'Updated Title' });
+  122 |
+  123 |       const config = api.buildRequestConfiguration(Method.PUT, endpoint, {
+  124 |         id: existingBook.id,
+  125 |         payload: updatedPayload
+  126 |       });
+  127 |       response = await api.sendRequest(config);
+  128 |     });
+  129 |
+  130 |     test('has 200 response code', async () => {
+  131 |       expect(response.status()).toBe(200);
+  132 |     });
+  133 |
+  134 |     test('has updated title in response', async () => {
+  135 |       const data = await response.json();
+  136 |       expect(data.title).toBe(updatedPayload.title);
+  137 |     });
+  138 |   });
+  139 |
+  140 |   // DELETE book by ID
+```

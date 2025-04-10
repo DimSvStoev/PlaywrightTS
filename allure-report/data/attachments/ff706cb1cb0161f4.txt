@@ -1,0 +1,110 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 🔐 Data-Driven Login Form Tests >> Login #7: "standard_user" should succeed
+- Location: C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\ui tests\login.spec.ts:25:9
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "Swag Labs"
+Received: "Products"
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\ui tests\login.spec.ts:34:50
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { LoginPage } from '../../src/pages/loginPage';
+   3 | import { MainPage } from '../../src/pages/MainPage';
+   4 | import path from 'path';
+   5 | import { JsonFileReader } from '../../src/utils/data-reader';
+   6 |
+   7 | const dataFile = path.resolve(__dirname, '../../src/test-data/UI-testData.json');
+   8 | const fileReader = new JsonFileReader();
+   9 |
+  10 | interface TestUser {
+  11 |   username: string;
+  12 |   password: string;
+  13 |   shouldLogin?: boolean;
+  14 |   message?: string;
+  15 | }
+  16 |
+  17 | interface TypeOfTestData {
+  18 |   users: TestUser[];
+  19 | }
+  20 |
+  21 | const testData = fileReader.readFile(dataFile) as TypeOfTestData;
+  22 |
+  23 | test.describe('🔐 Data-Driven Login Form Tests', () => {
+  24 |   testData.users.forEach((user, index) => {
+  25 |     test(`Login #${index + 1}: "${user.username ?? '<empty>'}" should ${user.shouldLogin ? 'succeed' : 'fail'}`, async ({ page }) => {
+  26 |       const loginPage = new LoginPage(page);
+  27 |       const mainPage = new MainPage(page);
+  28 |       await loginPage.goToLoginPage();
+  29 |       await loginPage.login(user.username, user.password);
+  30 |
+  31 |       if (user.shouldLogin == false) {
+  32 |         expect(await loginPage.getErrorMessagetext()).toBe(user.message);
+  33 |       } else {
+> 34 |         expect(await mainPage.getMainPageText()).toBe('Swag Labs');
+     |                                                  ^ Error: expect(received).toBe(expected) // Object.is equality
+  35 |       }
+  36 |     });
+  37 |   });
+  38 |
+  39 |     test('logout', async ({ page }) => {
+  40 |     const loginPage = new LoginPage(page);
+  41 |     const mainPage = new MainPage(page);
+  42 |     await loginPage.goToLoginPage();
+  43 |     await loginPage.login('standard_user', 'secret_sauce');
+  44 |     await mainPage.logOut();
+  45 |
+  46 |   });
+  47 | });
+  48 |
+  49 |
+  50 | test.describe('addElementToCart', () => {
+  51 |   test.beforeEach(async ({ page }) => {
+  52 |     const loginPage = new LoginPage(page);
+  53 |     await loginPage.goToLoginPage();
+  54 |     await loginPage.login('standard_user', 'secret_sauce');
+  55 |   });
+  56 |
+  57 |   test('Add all elements to cart', async ({ page }) => {
+  58 |     const mainPage = new MainPage(page);
+  59 |     const addCartButtonCounter:number = await mainPage.addCartButton.count();
+  60 |     await mainPage.clickAllButtons(mainPage.addCartButton);
+  61 |     expect(await mainPage.removeCartButton.count()).toBe(addCartButtonCounter);
+  62 |     expect(parseInt( await mainPage.getShopCartIndicatorText())).toBe(addCartButtonCounter);
+  63 |   });
+  64 |
+  65 |   test('Remove all cart items from remove button', async ({ page }) => {
+  66 |     const mainPage = new MainPage(page);
+  67 |     const addCartButtonCounter:number = await mainPage.addCartButton.count();
+  68 |     await mainPage.clickAllButtons(mainPage.addCartButton);
+  69 |     await mainPage.clickAllButtons(mainPage.removeCartButton);
+  70 |
+  71 |     expect(await mainPage.addCartButton.count()).toBe(addCartButtonCounter);
+  72 |     expect(await mainPage.shopCartIndicator).toBeHidden();
+  73 |   });
+  74 |
+  75 |   test('Remove all cart items from reset app state funcitonality', async ({ page }) => {
+  76 |     const mainPage = new MainPage(page);
+  77 |     const addCartButtonCounter:number = await mainPage.addCartButton.count();
+  78 |     await mainPage.clickAllButtons(mainPage.addCartButton);
+  79 |     await mainPage.resetAppState();
+  80 |
+  81 |     expect(await mainPage.addCartButton.count()).toBe(addCartButtonCounter);
+  82 |     expect(await mainPage.shopCartIndicator).toBeHidden();
+  83 |   });
+  84 | });
+```

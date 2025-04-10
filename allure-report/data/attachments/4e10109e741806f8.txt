@@ -1,0 +1,10 @@
+📤 Sent: {
+  id: 0,
+  title: 'Test Book',
+  description: 'Test Description',
+  pageCount: 111,
+  excerpt: 'Test excerpt',
+  publishDate: '2025-04-07T15:55:28.141Z'
+}
+📥 Response text: {"id":0,"title":"Test Book","description":"Test Description","pageCount":111,"excerpt":"Test excerpt","publishDate":"2025-04-07T15:55:28.141Z"}
+📊 Status: 200

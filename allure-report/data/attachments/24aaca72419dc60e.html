@@ -1,0 +1,69 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 🔐 Data-Driven Login Form Tests >> Login #1: "admin_user" should succeed
+- Location: C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\ui tests\login.spec.ts:23:9
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+
+Locator: locator(':root')
+Expected pattern: /inventory/
+Received string:  "https://www.saucedemo.com/"
+Call log:
+  - expect.toHaveURL with timeout 5000ms
+  - waiting for locator(':root')
+    9 × locator resolved to <html lang="en">…</html>
+      - unexpected value "https://www.saucedemo.com/"
+
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\ui tests\login.spec.ts:29:28
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { LoginPage } from '../../src/pages/loginPage';
+   3 | import path from 'path';
+   4 | import { JsonFileReader } from '../../src/utils/data-reader';
+   5 |
+   6 | const dataFile = path.resolve(__dirname, '../../src/test-data/UI-testData.json');
+   7 | const fileReader = new JsonFileReader();
+   8 |
+   9 | interface TestUser {
+  10 |   username: string | null;
+  11 |   password: string;
+  12 |   shouldLogin: boolean;
+  13 | }
+  14 |
+  15 | interface TypeOfTestData {
+  16 |   users: TestUser[];
+  17 | }
+  18 |
+  19 | const testData = fileReader.readFile(dataFile) as TypeOfTestData;
+  20 |
+  21 | test.describe('🔐 Data-Driven Login Form Tests', () => {
+  22 |   testData.users.forEach((user, index) => {
+  23 |     test(`Login #${index + 1}: "${user.username ?? '<empty>'}" should ${user.shouldLogin ? 'succeed' : 'fail'}`, async ({ page }) => {
+  24 |       const loginPage = new LoginPage(page);
+  25 |       await loginPage.goToLoginPage();
+  26 |       await loginPage.login(user.username ?? '', user.password);
+  27 |
+  28 |       if (user.shouldLogin) {
+> 29 |         await expect(page).toHaveURL(/inventory/);
+     |                            ^ Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+  30 |       } else {
+  31 |         await expect(page.locator('[data-test="error"]')).toBeVisible();
+  32 |       }
+  33 |     });
+  34 |   });
+  35 | });
+  36 |
+```

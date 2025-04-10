@@ -1,0 +1,5 @@
+📡 Full URL: https://fakerestapi.azurewebsites.net/api/v1/Books/-999
+🧾 Headers: { 'Content-Type': 'application/json; charset=utf-8' }
+📦 Body: undefined
+📥 Server response text: {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404,"traceId":"00-fc3885a6a433504eb49b3fd295a81568-17928b9c35f09f4a-00"}
+📊 Status: 404

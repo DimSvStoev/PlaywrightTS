@@ -1,0 +1,10 @@
+📡 POST to: https://fakerestapi.azurewebsites.net/api/v1/Books
+🧾 Headers: { 'Content-Type': 'application/json' }
+📦 Body: {
+  id: 0,
+  title: 'string',
+  description: 'string',
+  pageCount: 0,
+  excerpt: 'string',
+  publishDate: '2025-04-07T15:13:19.692Z'
+}

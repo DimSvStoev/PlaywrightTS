@@ -1,0 +1,184 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Endpoint /Books >> POST Books >> has 200 response code
+- Location: C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\get-books.spec.ts:85:9
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 200
+Received: 404
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\get-books.spec.ts:86:33
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { BaseApi } from '../src/api/base-api';
+   3 | import { BooksApi } from '../src/api/books-api';
+   4 | import { Endpoint, Method } from '../src/constants/api-const';
+   5 |
+   6 | test.describe(`Endpoint /${Endpoint.BOOKS}`, () => {
+   7 |   let api: BaseApi;
+   8 |   let repository: BooksApi;
+   9 |   const endpoint = Endpoint.BOOKS;
+   10 |
+   11 |   test.beforeAll(async () => {
+   12 |     api = new BaseApi();
+   13 |     repository = new BooksApi();
+   14 |     await api.initContext();
+   15 |   });
+   16 |
+   17 |   // GET all books
+   18 |   test.describe(`${Method.GET} all ${endpoint}`, () => {
+   19 |     let response;
+   20 |
+   21 |     test.beforeAll(async () => {
+   22 |       const config = api.buildRequestConfiguration(Method.GET, endpoint);
+   23 |       response = await api.sendRequest(config);
+   24 |     });
+   25 |
+   26 |     test('has 200 response code', async () => {
+   27 |       expect(response.status()).toBe(200);
+   28 |     });
+   29 |
+   30 |     test('has response data as a non-empty array', async () => {
+   31 |       const data = await response.json();
+   32 |       expect(Array.isArray(data)).toBe(true);
+   33 |       expect(data.length).toBeGreaterThan(0);
+   34 |     });
+   35 |   });
+   36 |
+   37 |   // GET book by ID
+   38 |   test.describe(`${Method.GET} ${endpoint} by ID`, () => {
+   39 |     let response;
+   40 |     let existingBook;
+   41 |
+   42 |     test.beforeAll(async () => {
+   43 |       existingBook = repository.loadBooks()[0];
+   44 |       const config = api.buildRequestConfiguration(Method.GET, endpoint, { id: existingBook.id });
+   45 |       response = await api.sendRequest(config);
+   46 |     });
+   47 |
+   48 |     test('has 200 response code', async () => {
+   49 |       expect(response.status()).toBe(200);
+   50 |     });
+   51 |
+   52 |     test('has all fields matching existing book', async () => {
+   53 |       const data = await response.json();
+   54 |       for (const key of Object.keys(existingBook)) {
+   55 |         expect(data[key]).toBe(existingBook[key]);
+   56 |       }
+   57 |     });
+   58 |   });
+   59 |
+   60 |   // GET book by non-existing ID
+   61 |   test.describe(`${Method.GET} ${endpoint} by non-existing ID`, () => {
+   62 |     let response;
+   63 |
+   64 |     test.beforeAll(async () => {
+   65 |       const config = api.buildRequestConfiguration(Method.GET, endpoint, { id: -999 });
+   66 |       response = await api.sendRequest(config);
+   67 |     });
+   68 |
+   69 |     test('has 404 response code', async () => {
+   70 |       expect(response.status()).toBe(404);
+   71 |     });
+   72 |   });
+   73 |
+   74 |   // POST create new book
+   75 |   test.describe(`${Method.POST} ${endpoint}`, () => {
+   76 |     let response;
+   77 |     let payload;
+   78 |
+   79 |     test.beforeAll(async () => {
+   80 |       payload = repository.generateBookPayload();
+   81 |       const config = api.buildRequestConfiguration(Method.POST, endpoint, { payload });
+   82 |       response = await api.sendRequest(config);
+   83 |     });
+   84 |
+   85 |     test('has 200 response code', async () => {
+>  86 |       expect(response.status()).toBe(200);
+      |                                 ^ Error: expect(received).toBe(expected) // Object.is equality
+   87 |     });
+   88 |
+   89 |     test('has response data with valid id', async () => {
+   90 |       const data = await response.json();
+   91 |       expect(data.id).toBeGreaterThan(0);
+   92 |     });
+   93 |
+   94 |     test('has response data matching payload', async () => {
+   95 |       const data = await response.json();
+   96 |       for (const key of Object.keys(payload)) {
+   97 |         expect(data[key]).toBe(payload[key]);
+   98 |       }
+   99 |     });
+  100 |   });
+  101 |
+  102 |   // PUT update existing book
+  103 |   test.describe(`${Method.PUT} ${endpoint} by ID`, () => {
+  104 |     let response;
+  105 |     let updatedPayload;
+  106 |
+  107 |     test.beforeAll(async () => {
+  108 |       const existingBook = repository.loadBooks()[0];
+  109 |       updatedPayload = repository.generateBookPayload({ id: existingBook.id, title: 'Updated Title' });
+  110 |
+  111 |       const config = api.buildRequestConfiguration(Method.PUT, endpoint, {
+  112 |         id: existingBook.id,
+  113 |         payload: updatedPayload
+  114 |       });
+  115 |       response = await api.sendRequest(config);
+  116 |     });
+  117 |
+  118 |     test('has 200 response code', async () => {
+  119 |       expect(response.status()).toBe(200);
+  120 |     });
+  121 |
+  122 |     test('has updated title in response', async () => {
+  123 |       const data = await response.json();
+  124 |       expect(data.title).toBe(updatedPayload.title);
+  125 |     });
+  126 |   });
+  127 |
+  128 |   // DELETE book by ID
+  129 |   test.describe(`${Method.DELETE} ${endpoint} by ID`, () => {
+  130 |     let response;
+  131 |     let createdBookId;
+  132 |
+  133 |     test.beforeAll(async () => {
+  134 |       const bookToDelete = repository.generateBookPayload();
+  135 |
+  136 |       // First, create a book
+  137 |       const postConfig = api.buildRequestConfiguration(Method.POST, endpoint, { payload: bookToDelete });
+  138 |       const postResponse = await api.sendRequest(postConfig);
+  139 |       const createdBook = await postResponse.json();
+  140 |       createdBookId = createdBook.id;
+  141 |
+  142 |       // Then, delete it
+  143 |       const deleteConfig = api.buildRequestConfiguration(Method.DELETE, endpoint, { id: createdBookId });
+  144 |       response = await api.sendRequest(deleteConfig);
+  145 |     });
+  146 |
+  147 |     test('has 200 response code', async () => {
+  148 |       expect(response.status()).toBe(200);
+  149 |     });
+  150 |
+  151 |     test('book is no longer retrievable', async () => {
+  152 |       const getConfig = api.buildRequestConfiguration(Method.GET, endpoint, { id: createdBookId });
+  153 |       const getResponse = await api.sendRequest(getConfig);
+  154 |       expect(getResponse.status()).toBe(404);
+  155 |     });
+  156 |   });
+  157 | });
+  158 |
+```
