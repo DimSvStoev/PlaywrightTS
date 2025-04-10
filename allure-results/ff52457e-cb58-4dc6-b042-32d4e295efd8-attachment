@@ -1,0 +1,66 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: addElementToCart >> Add all elements to cart
+- Location: C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\ui tests\login.spec.ts:47:7
+
+# Error details
+
+```
+Error: locator.waitFor: Error: strict mode violation: locator('//button[text()="Add to cart"]') resolved to 6 elements:
+    1) <button id="add-to-cart-sauce-labs-backpack" name="add-to-cart-sauce-labs-backpack" data-test="add-to-cart-sauce-labs-backpack" class="btn btn_primary btn_small btn_inventory ">Add to cart</button> aka locator('[data-test="add-to-cart-sauce-labs-backpack"]')
+    2) <button id="add-to-cart-sauce-labs-bike-light" name="add-to-cart-sauce-labs-bike-light" data-test="add-to-cart-sauce-labs-bike-light" class="btn btn_primary btn_small btn_inventory ">Add to cart</button> aka locator('[data-test="add-to-cart-sauce-labs-bike-light"]')
+    3) <button id="add-to-cart-sauce-labs-bolt-t-shirt" name="add-to-cart-sauce-labs-bolt-t-shirt" data-test="add-to-cart-sauce-labs-bolt-t-shirt" class="btn btn_primary btn_small btn_inventory ">Add to cart</button> aka locator('[data-test="add-to-cart-sauce-labs-bolt-t-shirt"]')
+    4) <button id="add-to-cart-sauce-labs-fleece-jacket" name="add-to-cart-sauce-labs-fleece-jacket" class="btn btn_primary btn_small btn_inventory " data-test="add-to-cart-sauce-labs-fleece-jacket">Add to cart</button> aka locator('[data-test="add-to-cart-sauce-labs-fleece-jacket"]')
+    5) <button id="add-to-cart-sauce-labs-onesie" name="add-to-cart-sauce-labs-onesie" data-test="add-to-cart-sauce-labs-onesie" class="btn btn_primary btn_small btn_inventory ">Add to cart</button> aka locator('[data-test="add-to-cart-sauce-labs-onesie"]')
+    6) <button class="btn btn_primary btn_small btn_inventory " id="add-to-cart-test.allthethings()-t-shirt-(red)" name="add-to-cart-test.allthethings()-t-shirt-(red)" data-test="add-to-cart-test.allthethings()-t-shirt-(red)">Add to cart</button> aka locator('[data-test="add-to-cart-test\\.allthethings\\(\\)-t-shirt-\\(red\\)"]')
+
+Call log:
+  - waiting for locator('//button[text()="Add to cart"]') to be visible
+
+    at MainPage.clickAllAddToCartButtons (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\src\pages\MainPage.ts:26:30)
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\ui tests\login.spec.ts:49:20
+```
+
+# Test source
+
+```ts
+   1 | import { Page, Locator } from '@playwright/test';
+   2 | import { AppSettings, ApiService } from '../config/app-settings';
+   3 | import { JsonFileReader } from '../utils/data-reader';
+   4 |
+   5 | export class MainPage {
+   6 |
+   7 |
+   8 |     private readonly fileReader = new JsonFileReader();
+   9 |
+  10 |     constructor(private readonly page: Page) {}
+  11 |
+  12 |   get mainPageLogo(): Locator {
+  13 |     return this.page.locator('//div[@class="app_logo"]');	
+  14 |   }
+  15 |
+  16 |   get addCartButton(): Locator {
+  17 |     return this.page.locator('//button[text()="Add to cart"]');
+  18 |   }
+  19 |
+  20 |   async getLogoText(): Promise<string> {
+  21 |     await this.mainPageLogo.waitFor({ state: 'visible' });
+  22 |     return await this.mainPageLogo.textContent() ?? '';	
+  23 |   }
+  24 |
+  25 |   async clickAllAddToCartButtons(): Promise<void> {
+> 26 |     await this.addCartButton.waitFor({ state: 'visible' });
+     |                              ^ Error: locator.waitFor: Error: strict mode violation: locator('//button[text()="Add to cart"]') resolved to 6 elements:
+  27 |     const countCart = await this.addCartButton.count();
+  28 |     for (let i = 0; i < countCart; i++) {
+  29 |       await this.addCartButton.nth(i).click();
+  30 |     }
+  31 |   }
+  32 | }
+```

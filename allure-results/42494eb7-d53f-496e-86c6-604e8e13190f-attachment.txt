@@ -1,0 +1,13 @@
+📡 Full URL: https://fakerestapi.azurewebsites.net/api/v1/Books
+🧾 Headers: { 'Content-Type': 'application/json; charset=utf-8' }
+📦 Body: {
+  "id": 0,
+  "title": "Test Book",
+  "description": "string",
+  "pageCount": 123,
+  "excerpt": "sample",
+  "publishDate": "2025-04-07T15:59:10.418Z"
+}
+📥 Server response text: {"id":0,"title":"Test Book","description":"string","pageCount":123,"excerpt":"sample","publishDate":"2025-04-07T15:59:10.418Z"}
+📊 Status: 200
+✅ TEXT: {"id":0,"title":"Test Book","description":"string","pageCount":123,"excerpt":"sample","publishDate":"2025-04-07T15:59:10.418Z"}

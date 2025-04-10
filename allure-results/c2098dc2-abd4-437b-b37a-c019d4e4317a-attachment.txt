@@ -1,0 +1,19 @@
+📦 Payload:
+ {
+  "id": 9,
+  "title": "Test Book",
+  "description": "Auto-generated book",
+  "pageCount": 100,
+  "excerpt": "Excerpt...",
+  "publishDate": "2025-04-07T15:32:50.798Z"
+}
+📡 POST to: https://fakerestapi.azurewebsites.net/api/v1/Books
+🧾 Headers: { 'Content-Type': 'charset=utf-8' }
+📦 Body: {
+  id: 9,
+  title: 'Test Book',
+  description: 'Auto-generated book',
+  pageCount: 100,
+  excerpt: 'Excerpt...',
+  publishDate: '2025-04-07T15:32:50.798Z'
+}

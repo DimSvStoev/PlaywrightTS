@@ -1,0 +1,14 @@
+# Node modules
+node_modules/
+
+# Playwright test results
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# VS Code settings (по избор)
+.vscode/
+
+# Env files (ако използваш)
+.env

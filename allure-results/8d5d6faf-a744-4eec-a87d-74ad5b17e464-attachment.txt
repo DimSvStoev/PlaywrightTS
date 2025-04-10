@@ -1,0 +1,9 @@
+📦 Payload:
+ {
+  "id": 0,
+  "title": "string",
+  "description": "string",
+  "pageCount": 0,
+  "excerpt": "string",
+  "publishDate": "2025-04-07T15:45:00.000Z"
+}

@@ -1,0 +1,22 @@
+📦 Payload:
+ {
+  "id": 2,
+  "title": "Test Book",
+  "description": "Auto-generated book",
+  "pageCount": 100,
+  "excerpt": "Excerpt...",
+  "publishDate": "2025-04-07T16:19:32.850Z"
+}
+📡 Full URL: https://fakerestapi.azurewebsites.net/api/v1/Books
+📬 Method: POST
+🧾 Headers: { 'Content-Type': 'application/json; charset=utf-8' }
+📦 Body: {
+  "id": 2,
+  "title": "Test Book",
+  "description": "Auto-generated book",
+  "pageCount": 100,
+  "excerpt": "Excerpt...",
+  "publishDate": "2025-04-07T16:19:32.850Z"
+}
+📥 Server response text: {"id":2,"title":"Test Book","description":"Auto-generated book","pageCount":100,"excerpt":"Excerpt...","publishDate":"2025-04-07T16:19:32.85Z"}
+📊 Status: 200

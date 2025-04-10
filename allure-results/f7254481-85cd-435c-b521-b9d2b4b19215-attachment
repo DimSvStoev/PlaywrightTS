@@ -1,0 +1,76 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 🔐 Data-Driven Login Form Tests >> Login #2: "" should fail
+- Location: C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\ui tests\login.spec.ts:24:9
+
+# Error details
+
+```
+Error: locator.innerText: Test ended.
+Call log:
+  - waiting for locator('[data-test="error"]')
+
+    at LoginPage.getErrorMessagetext (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\src\pages\loginPage.ts:47:41)
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\ui tests\login.spec.ts:30:32
+```
+
+# Test source
+
+```ts
+   1 | import { Page, Locator } from '@playwright/test';
+   2 | import { AppSettings, ApiService } from '../config/app-settings';
+   3 | import { JsonFileReader } from '../utils/data-reader';
+   4 | import path from 'path';
+   5 |
+   6 | export class LoginPage {
+   7 |
+   8 |     private static readonly SETTINGS_FILE = path.resolve(__dirname, '../../../appSettings.json');
+   9 |     private readonly baseUiUrl: string;
+  10 |     private readonly fileReader = new JsonFileReader();
+  11 |
+  12 |
+  13 |
+  14 |
+  15 |     constructor(private readonly page: Page) {
+  16 |     const settings = this.fileReader.readFile(LoginPage.SETTINGS_FILE) as AppSettings;
+  17 |     this.baseUiUrl = settings.baseUrls[ApiService.BaseUiUrl];
+  18 |   }
+  19 |
+  20 |   get usernameInput(): Locator {
+  21 |     return this.page.locator('[data-test="username"]');
+  22 |   }
+  23 |
+  24 |   get passwordInput(): Locator {
+  25 |     return this.page.locator('[data-test="password"]');
+  26 |   }
+  27 |
+  28 |   get loginButton(): Locator {
+  29 |     return this.page.locator('//input[@data-test="login-button"]');
+  30 |   }
+  31 |
+  32 |   get loginErrorMessage(): Locator {
+  33 |     return this.page.locator('[data-test="error"]');
+  34 |   }
+  35 |
+  36 |   async goToLoginPage(): Promise<void> {
+  37 |     await this.page.goto(this.baseUiUrl);
+  38 |   }
+  39 |
+  40 |   async login(username: string, password: string): Promise<void> {
+  41 |     await this.usernameInput.fill(username);
+  42 |     await this.passwordInput.fill(password);
+  43 |     await this.loginButton.click();
+  44 |   }
+  45 |
+  46 |   async getErrorMessagetext(): Promise<string> {
+> 47 |     return await this.loginErrorMessage.innerText();
+     |                                         ^ Error: locator.innerText: Test ended.
+  48 |   }
+  49 | }
+```

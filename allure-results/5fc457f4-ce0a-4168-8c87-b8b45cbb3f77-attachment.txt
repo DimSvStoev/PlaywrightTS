@@ -1,0 +1,25 @@
+Error reading file at ./src/test-data/books.json: Error: ENOENT: no such file or directory, open 'C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\src\test-data\books.json'
+    at Object.readFileSync (node:fs:442:20)
+    at JsonFileReader.readFile (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\src\utils\data-reader.ts:6:22)
+    at BooksApi.loadBooks (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\src\api\books-api.ts:8:28)
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\project-root\tests\get-books.spec.ts:43:33
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\fixtureRunner.js:236:52
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\testInfo.js:299:17
+    at TimeoutManager.withRunnable (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\timeoutManager.js:69:34)
+    at TestInfoImpl._runWithTimeout (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\testInfo.js:297:34)
+    at FixtureRunner.resolveParametersAndRunFunction (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\fixtureRunner.js:236:20)
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\workerMain.js:521:13
+    at TestInfoImpl._runAsStep (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\testInfo.js:286:7)
+    at WorkerMain._runAllHooksForSuite (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\workerMain.js:504:9)
+    at WorkerMain._runBeforeAllHooksForSuite (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\workerMain.js:497:5)
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\workerMain.js:320:37
+    at TestInfoImpl._runAsStep (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\testInfo.js:286:7)
+    at C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\workerMain.js:315:7
+    at WorkerMain._runTest (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\workerMain.js:292:5)
+    at WorkerMain.runTestGroup (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\worker\workerMain.js:207:11)
+    at process.<anonymous> (C:\Users\dimitar.stoev\Desktop\interview framework\AllWynPlaywright\node_modules\playwright\lib\common\process.js:95:22) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\dimitar.stoev\\Desktop\\interview framework\\AllWynPlaywright\\src\\test-data\\books.json'
+}

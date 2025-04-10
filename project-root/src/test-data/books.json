@@ -1,0 +1,19 @@
+[
+    {
+      "id": 11,
+      "title": "Book 11",
+      "description": "Description 11",
+      "pageCount": 1100,
+      "excerpt": "Excerpt 11",
+      "publishDate": "2023-10-01T00:00:00.000Z"
+    },
+    {
+      "id": 15,
+      "title": "Book 15",
+      "description": "Description 15",
+      "pageCount": 1500,
+      "excerpt": "Excerpt 15",
+      "publishDate": "2023-10-01T00:00:00.000Z"
+    }
+  ]
+  
