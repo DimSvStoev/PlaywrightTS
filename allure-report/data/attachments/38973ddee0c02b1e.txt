@@ -1,6 +1,0 @@
-📡 Full URL: https://fakerestapi.azurewebsites.net/api/v1/Books
-🧾 Headers: { 'Content-Type': 'application/json; charset=utf-8' }
-📦 Body: {"id":0,"title":"Test Book","description":"string","pageCount":123,"excerpt":"sample","publishDate":"2025-04-07T15:51:27.852Z"}
-📥 Server response text: {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"One or more validation errors occurred.","status":400,"traceId":"00-dafb944c1dec0646b16823ba2d59bdd8-c0fede50c0926546-00","errors":{"":["A non-empty request body is required."]}}
-📊 Status: 400
-✅ TEXT: {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"One or more validation errors occurred.","status":400,"traceId":"00-dafb944c1dec0646b16823ba2d59bdd8-c0fede50c0926546-00","errors":{"":["A non-empty request body is required."]}}

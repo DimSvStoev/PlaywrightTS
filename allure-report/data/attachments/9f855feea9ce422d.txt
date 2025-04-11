@@ -1,5 +1,0 @@
-📡 Full URL: https://fakerestapi.azurewebsites.net/api/v1/Books/11
-🧾 Headers: { 'Content-Type': 'application/json; charset=utf-8' }
-📦 Body: undefined
-📥 Server response text: {"id":11,"title":"Book 11","description":"Lorem lorem lorem. Lorem lorem lorem. Lorem lorem lorem.\n","pageCount":1100,"excerpt":"Lorem lorem lorem. Lorem lorem lorem. Lorem lorem lorem.\nLorem lorem lorem. Lorem lorem lorem. Lorem lorem lorem.\nLorem lorem lorem. Lorem lorem lorem. Lorem lorem lorem.\nLorem lorem lorem. Lorem lorem lorem. Lorem lorem lorem.\nLorem lorem lorem. Lorem lorem lorem. Lorem lorem lorem.\n","publishDate":"2025-03-27T16:13:44.8103723+00:00"}
-📊 Status: 200

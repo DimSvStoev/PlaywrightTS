@@ -1,2 +1,0 @@
-GET all response status: 404
-GET all response body (text): 

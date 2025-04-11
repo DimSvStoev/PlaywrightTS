@@ -1,4 +1,0 @@
-📥 Server response text: {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"One or more validation errors occurred.","status":400,"traceId":"00-d5797998bbe9a7448f8caf7b111ddd6b-014d73f024a10141-00","errors":{"":["A non-empty request body is required."]}}
-📊 Status: 400
-🔍 TEXT: {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"One or more validation errors occurred.","status":400,"traceId":"00-d5797998bbe9a7448f8caf7b111ddd6b-014d73f024a10141-00","errors":{"":["A non-empty request body is required."]}}
-🔢 STATUS: 400
