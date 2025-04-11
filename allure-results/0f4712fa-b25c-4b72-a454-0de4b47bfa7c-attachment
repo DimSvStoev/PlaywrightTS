@@ -1,0 +1,81 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 🔐 Data-Driven Login Form Tests >> Login #6: "locked_out_user" should fail
+- Location: C:\Projects\testProject\AllWynPlaywright\project-root\tests\ui-tests\login.spec.ts:25:9
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Browser logs:
+
+<launching> C:\Users\dimitar.stoev\AppData\Local\ms-playwright\chromium_headless_shell-1161\chrome-win\headless_shell.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AutoExpandDetailsElement,AvoidUnnecessaryBeforeUnloadCheckSync,CertificateTransparencyComponentUpdater,DeferRendererTasksAfterInput,DestroyProfileOnBrowserClose,DialMediaRouteProvider,ExtensionManifestV2Disabled,GlobalMediaControls,HttpsUpgrades,ImprovedCookieControls,LazyFrameLoading,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --enable-automation --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=C:\Users\DIMITA~1.STO\AppData\Local\Temp\playwright_chromiumdev_profile-EMmbvX --remote-debugging-pipe --no-startup-window
+<launched> pid=46808
+Call log:
+  - waiting for locator('//input[@data-test="login-button"]')
+
+    at LoginPage.login (C:\Projects\testProject\AllWynPlaywright\project-root\src\pages\loginPage.ts:43:28)
+    at C:\Projects\testProject\AllWynPlaywright\project-root\tests\ui-tests\login.spec.ts:29:7
+```
+
+# Test source
+
+```ts
+   1 | import { Page, Locator } from '@playwright/test';
+   2 | import { AppSettings, ApiService } from '../config/app-settings';
+   3 | import { JsonFileReader } from '../utils/data-reader';
+   4 | import path from 'path';
+   5 |
+   6 | export class LoginPage {
+   7 |
+   8 |     private static readonly SETTINGS_FILE = path.resolve(__dirname, '../../../appSettings.json');
+   9 |     private readonly baseUiUrl: string;
+  10 |     private readonly fileReader = new JsonFileReader();
+  11 |
+  12 |
+  13 |
+  14 |
+  15 |     constructor(private readonly page: Page) {
+  16 |     const settings = this.fileReader.readFile(LoginPage.SETTINGS_FILE) as AppSettings;
+  17 |     this.baseUiUrl = settings.baseUrls[ApiService.BaseUiUrl];
+  18 |   }
+  19 |
+  20 |   get usernameInput(): Locator {
+  21 |     return this.page.locator('[data-test="username"]');
+  22 |   }
+  23 |
+  24 |   get passwordInput(): Locator {
+  25 |     return this.page.locator('[data-test="password"]');
+  26 |   }
+  27 |
+  28 |   get loginButton(): Locator {
+  29 |     return this.page.locator('//input[@data-test="login-button"]');
+  30 |   }
+  31 |
+  32 |   get loginErrorMessage(): Locator {
+  33 |     return this.page.locator('[data-test="error"]');
+  34 |   }
+  35 |
+  36 |   async goToLoginPage(): Promise<void> {
+  37 |     await this.page.goto(this.baseUiUrl);
+  38 |   }
+  39 |
+  40 |   async login(username: string, password: string): Promise<void> {
+  41 |     await this.usernameInput.fill(username);
+  42 |     await this.passwordInput.fill(password);
+> 43 |     await this.loginButton.click();
+     |                            ^ Error: locator.click: Test ended.
+  44 |   }
+  45 |
+  46 |   async getErrorMessagetext(): Promise<string> {
+  47 |     await this.loginErrorMessage.waitFor({ state: 'visible' });
+  48 |     return await this.loginErrorMessage.textContent() ?? '';
+  49 |   }
+  50 | }
+```

@@ -1,0 +1,108 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 🔐 Data-Driven Login Form Tests >> logout
+- Location: C:\Projects\testProject\AllWynPlaywright\project-root\tests\ui-tests\login.spec.ts:39:9
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for locator('//a[@data-test="logout-sidebar-link"]')
+    - locator resolved to <a href="#" id="logout_sidebar_link" class="bm-item menu-item" data-test="logout-sidebar-link">Logout</a>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not stable
+    - retrying click action
+    - waiting 20ms
+    - waiting for element to be visible, enabled and stable
+    - element is not stable
+  - retrying click action
+    - waiting 100ms
+
+    at MainPage.logOut (C:\Projects\testProject\AllWynPlaywright\project-root\src\pages\MainPage.ts:61:29)
+    at C:\Projects\testProject\AllWynPlaywright\project-root\tests\ui-tests\login.spec.ts:44:5
+```
+
+# Test source
+
+```ts
+   1 | import { Page, Locator } from '@playwright/test';
+   2 | import { AppSettings, ApiService } from '../config/app-settings';
+   3 | import { JsonFileReader } from '../utils/data-reader';
+   4 |
+   5 | export class MainPage {
+   6 |
+   7 |
+   8 |     private readonly fileReader = new JsonFileReader();
+   9 |
+  10 |     constructor(private readonly page: Page) {}
+  11 |
+  12 |   get mainPageText(): Locator {
+  13 |     return this.page.locator('//span[@data-test="title"]');	
+  14 |   }
+  15 |
+  16 |   get resetAppButton(): Locator {
+  17 |     return this.page.locator('//a[@data-test="reset-sidebar-link"]');	
+  18 |   }
+  19 |
+  20 |   get logOutButton(): Locator {
+  21 |     return this.page.locator('//a[@data-test="logout-sidebar-link"]');	
+  22 |   }
+  23 |
+  24 |   get hamburgerMenuButton(): Locator {
+  25 |     return this.page.locator('//button[@id="react-burger-menu-btn"]');	
+  26 |   }
+  27 |
+  28 |   get addCartButton(): Locator {
+  29 |     return this.page.locator('//button[text()="Add to cart"]');
+  30 |   }
+  31 |
+  32 |   get removeCartButton(): Locator {
+  33 |     return this.page.locator('//button[text()="Remove"]');
+  34 |   }
+  35 |
+  36 |   get shopCartIndicator(): Locator {
+  37 |     return this.page.locator('[data-test="shopping-cart-badge"]');
+  38 |   }
+  39 |
+  40 |   async getMainPageText(): Promise<string> {
+  41 |     await this.mainPageText.waitFor({ state: 'visible' });
+  42 |     return await this.mainPageText.textContent() ?? '';	
+  43 |   }
+  44 |
+  45 |   async getShopCartIndicatorText(): Promise<string> {
+  46 |     await this.shopCartIndicator.waitFor({ state: 'visible' });
+  47 |     return await this.shopCartIndicator.textContent() ?? '';	
+  48 |   }
+  49 |
+  50 |   async resetAppState(): Promise<void> {
+  51 |     await this.hamburgerMenuButton.waitFor({ state: 'visible' });
+  52 |     await this.hamburgerMenuButton.click();
+  53 |     await this.resetAppButton.waitFor({ state: 'visible' });
+  54 |     await this.resetAppButton.click();
+  55 |   }
+  56 |
+  57 |   async logOut(): Promise<void> {
+  58 |     await this.hamburgerMenuButton.waitFor({ state: 'visible' });
+  59 |     await this.hamburgerMenuButton.click();
+  60 |     await this.logOutButton.waitFor({ state: 'visible' });
+> 61 |     await this.logOutButton.click();
+     |                             ^ Error: locator.click: Target page, context or browser has been closed
+  62 |   }
+  63 |   
+  64 |  async clickAllButtons(locator:Locator): Promise<void> {
+  65 |     await locator.first().waitFor({ state: 'visible' });
+  66 |    
+  67 |     while (await locator.count() > 0) {
+  68 |     await locator.first().click();
+  69 |     }
+  70 |   }
+  71 | }
+```

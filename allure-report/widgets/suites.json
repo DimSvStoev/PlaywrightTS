@@ -1,1 +1,0 @@
-{"total":2,"items":[{"uid":"b9fe46e1eef1003d2fcc7f45761fd7b1","name":"ui-tests\\login.spec.ts","statistic":{"failed":2,"broken":0,"skipped":0,"passed":9,"unknown":0,"total":11}},{"uid":"846c357bd2adc62b74731b904c40c10b","name":"ui-tests\\demo.spec.ts","statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1}}]}
