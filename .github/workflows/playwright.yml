@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: install dependencies
+      - name: Install dependencies
         run: | 
           npm install 
           npm install -g allure-commandline
@@ -30,13 +30,20 @@ jobs:
       - name: Run tests
         run: npm run test
 
+      - name: Generate Allure report
+        if: always()
+        run: npm run allure:generate
+
       - name: Deploy Allure report to GitHub Pages
+        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: allure-report
 
-      - name: Generate test report
+      - name: Upload Playwright HTML Report
         if: always()
-        run: |
-         npm run generate-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-html-report
+          path: playwright-report
