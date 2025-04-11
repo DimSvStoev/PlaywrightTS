@@ -35,3 +35,8 @@ jobs:
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: allure-report
+
+      - name: Generate test report
+        if: always()
+        run: |
+         npm run generate-report
