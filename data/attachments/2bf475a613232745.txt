@@ -1,9 +1,0 @@
-📦 Payload:
- {
-  "id": 3,
-  "title": "Test Book",
-  "description": "Auto-generated book",
-  "pageCount": 100,
-  "excerpt": "Excerpt...",
-  "publishDate": "2025-04-11T12:10:52.960Z"
-}
