@@ -18,14 +18,14 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install dependencies
+      - name: install dependencies
         run: | 
           npm install 
           npm install -g allure-commandline
           npm install -g playwright
 
-      - name: Install Playwright Browsers
-        run: npx playwright install
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
 
       - name: Run tests
         run: npm run test
