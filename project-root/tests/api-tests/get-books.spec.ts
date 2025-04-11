@@ -8,7 +8,7 @@ const endpoint = Endpoint.BOOKS;
 test.describe(`Endpoint /${endpoint}`, () => {
 
   // GET all books
-  test.describe.only(`${Method.GET} all ${endpoint}`, () => {
+  test.describe(`${Method.GET} all ${endpoint}`, () => {
     let api: BaseApi;
     let response;
     let raw: string;
