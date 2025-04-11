@@ -1,8 +1,9 @@
-name: Deploy Allure Report to GitHub Pages
+name: Run tests and deploy
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
 
 jobs:
   deploy:
@@ -10,24 +11,24 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+      - name: install dependencies
+        run: | 
+          npm install 
+          npm install -g allure-commandline
+          npm install -g playwright
 
       - name: Run tests
         run: npm run test
 
       - name: Deploy Allure report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
+          github_token: ${{ secrets.GH_TOKEN }}
+          publish_dir: allure-report
